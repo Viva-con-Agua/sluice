@@ -1,8 +1,15 @@
 
-# microservice datastruct
+
+class microservice(object):
+
+    Permission = {'name': '',
+                  'functionList': []
+                }
+
     Microservice = { 'name': '',
                      'url': '',
-                     'publicKey': ''
+                     'publicKey': '',
+                     'permissions': [self.Permission]
                     }
     
 

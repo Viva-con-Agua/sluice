@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-
+from models import microservice
 
 # database handler for microservices 
 
@@ -53,4 +53,25 @@ class microserviceDAO(object):
         else:
             return False
 
+    # get microservice_Key by name
+    def get_Key(self, name):
+
+        # db == Microservices-Collection
+        db = self.microDB
+
+        # search microservice by name and store in microData
+        microData = db.find_one({'name': name})
+
+        # if there is a microservice with the name name, return key
+        if microData != None:
+            return microData['name']
+
+        #else return False
+        else:
+            return False
+
     
+        
+
+
+
