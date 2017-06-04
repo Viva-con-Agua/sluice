@@ -9,7 +9,7 @@ class microservice(object):
     Microservice = { 'name': '',
                      'url': '',
                      'publicKey': '',
-                     'permissions': [self.Permission]
+                     'permissions': [Permission]
                     }
     
 

@@ -1,9 +1,9 @@
 
 from jose import jws
 from jose.exceptions import JWSError
+from daos import *
 
-
-class login(object)
+class login(object):
 
     def __init__(self):
         self.microDB = microserviceDAO

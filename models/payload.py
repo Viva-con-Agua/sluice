@@ -2,9 +2,9 @@
 class payload(object):
 
     Payload = { 
-        micro = { 'name': '',
+        'micro': { 'name': '',
                   'pubKey': '',
                   'url': ''
-                }
-        access_to = ['']
+                },
+        'access_to' : ['']
     }
