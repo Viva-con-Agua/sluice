@@ -1,5 +1,7 @@
 import sys, getopt
-from app.webserver import webserver
+from daos import *
+from models import microservice
+
 
 def main(argv):
     privatekey = ''
@@ -15,8 +17,6 @@ def main(argv):
             sys.exit()
         elif opt in ("-p", '--privateKey'):
             privatekey = arg
-    server = webserver(privatekey)
-    server.runserver()
 
 if __name__ == '__main__':
     main(sys.argv[1:])
