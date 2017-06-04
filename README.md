@@ -4,7 +4,7 @@ Sluice is responsible for inter-microservice authentication.
 ChangeLog
 =========
 
-## Version 0.0.1 (2017-06-02)
+## Version 0.0.7 (2017-06-04)
 
 [[I] #1 - setup mongo] (https://github.com/Viva-con-Agua/sluice/issues/1)
 [[I] #2 - setup pyhton-jose handler] (https://github.com/Viva-con-Agua/sluice/issues/2)
