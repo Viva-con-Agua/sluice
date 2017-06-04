@@ -5,7 +5,7 @@ import copy
 
 class shared_session(object):
 
-    def create_token(login_payload):
+    def create_token(login_payload, key):
         payload = copy.deepcopy(payload.Payload)
         payload.micro = login_payload.micro
 
