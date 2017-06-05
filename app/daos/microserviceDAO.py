@@ -24,7 +24,7 @@ class microserviceDAO(object):
         db = self.microDB
 
         #search microservice by name and store in microData
-        mircoData = db.find_one({'name': microservice.name})
+        microData = db.find_one({'name': microservice['name']})
 
         # if the microservice have no entry in Microservices-Collection,
         # insert and return True

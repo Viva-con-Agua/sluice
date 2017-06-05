@@ -10,7 +10,7 @@ export default class SignUpMicro extends React.Component {
 
 		this.state = {
 			name: '',
-			link:'',
+			url:'',
 			version: '',
 			doku: ''
 		};
@@ -31,7 +31,17 @@ export default class SignUpMicro extends React.Component {
 	}
 
 	handleSubmit(event) {
-	
+		fetch('http://localhost:8080/api/addMicro', {
+			method: 'POST', 
+			headers: { 
+				'Accept': 'application/json', 
+				'Content-Type': 'application/json', }, 
+			body: JSON.stringify({ 
+				microName: this.state.name, 
+				microUrl: this.state.url, 
+				microVersion: this.state.version,
+			}) 
+		})
 		event.preventDefault();	
 	}
 
@@ -64,7 +74,8 @@ export default class SignUpMicro extends React.Component {
 							onChange={this.handleVersionChange}
 							/>
   				</label>
-				<input type="submit" value="Submit" />
+					<input type="button" value="Submit" onClick={this.handleSubmit}/>
+			
 				</form>
       </div>
 		);

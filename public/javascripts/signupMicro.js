@@ -9581,7 +9581,17 @@ var SignUpMicro = function (_React$Component) {
 	}, {
 		key: 'handleSubmit',
 		value: function handleSubmit(event) {
-
+			fetch('http://localhost:8080/api/addMicro', {
+				method: 'POST',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					microName: this.state.name,
+					microUrl: this.state.link,
+					microVersion: this.state.version
+				})
+			});
 			event.preventDefault();
 		}
 	}, {
@@ -9624,7 +9634,7 @@ var SignUpMicro = function (_React$Component) {
 							onChange: this.handleVersionChange
 						})
 					),
-					_react2.default.createElement('input', { type: 'submit', value: 'Submit' })
+					_react2.default.createElement('input', { type: 'button', value: 'Submit', onClick: this.handleSubmit })
 				)
 			);
 		}

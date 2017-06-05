@@ -1,7 +1,8 @@
 from app.auth import *
-
+from app.daos import *
+from app.models.microservice import microservice
 from bottle import Bottle, route, run, request, static_file, template
-
+import copy
 key = ''
 
 class webserver:
@@ -9,14 +10,25 @@ class webserver:
     sluice = Bottle()
     login = login()
     shared_session = shared_session()
-
-
+    db = microserviceDAO()
     def __init__(self, key):
         self.key = key
 
     @sluice.route('/')
     def index():
         return "sluice manual: coming soon"
+    
+    
+    @sluice.route('/api/addMicro', method='POST')
+    def addMicro():
+        microS = microservice()
+        micro = copy.deepcopy(microS.Microservice)
+        micro['name'] = request.json['microName']
+        micro['url'] = request.json['microUrl']
+        micro['version'] = request.json['microVersion']
+     #   db = microserviceDAO()
+        webserver.db.add(micro)
+
     
 
     @sluice.route('/signupMicro')

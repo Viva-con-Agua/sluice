@@ -8,8 +8,8 @@ class microservice(object):
 
     Microservice = { 'name': '',
                      'url': '',
+                     'version': '',
                      'publicKey': '',
                      'permissions': [Permission]
                     }
     
-
