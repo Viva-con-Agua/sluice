@@ -1,6 +1,6 @@
 from bottle import Bottle, run, request, server_names, ServerAdapter
 
-class MySSLCherryPy(ServerAdapter):
+class ssl_server(ServerAdapter):
     def run(self, handler):
         from cherrypy import _cpwsgiserver3
         server = _cpwsgiserver3.CherryPyWSGIServer((self.host, self.port), handler)
