@@ -1,6 +1,6 @@
 import sys, getopt
 from app.webserver import webserver
-
+import cherrypy
 def main(argv):
     privatekey = ''
     
@@ -15,8 +15,9 @@ def main(argv):
             sys.exit()
         elif opt in ("-p", '--privateKey'):
             privatekey = arg
-    server = webserver(privatekey)
-    server.runserver()
-
-if __name__ == '__main__':
-    main(sys.argv[1:])
+#if __name__ == '__main__':
+   # main(sys.argv[1:])
+cherrypy.config.update({'engine.autoreload.on': False})
+cherrypy.server.unsubscribe()
+cherrypy.engine.start()
+wsgiapp = cherrypy.tree.mount(webserver())
