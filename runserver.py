@@ -15,9 +15,17 @@ def main(argv):
             sys.exit()
         elif opt in ("-p", '--privateKey'):
             privatekey = arg
-#if __name__ == '__main__':
+if __name__ == '__main__':
    # main(sys.argv[1:])
-cherrypy.config.update({'engine.autoreload.on': False})
-cherrypy.server.unsubscribe()
-cherrypy.engine.start()
-wsgiapp = cherrypy.tree.mount(webserver())
+    server_config={
+            'server.socket_host': '0.0.0.0',
+            'server.socket_port': 8080
+            }
+    cherrypy.config.update(server_config)
+    cherrypy.quickstart(webserver())
+#cherrypy.config.update({'engine.autoreload.on': False})
+#cherrypy.server.unsubscribe()
+#cherrypy.engine.start()
+#wsgiapp = cherrypy.tree.mount(webserver())
+
+

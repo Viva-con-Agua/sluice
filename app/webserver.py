@@ -1,7 +1,7 @@
 from app.auth import *
 from app.daos import *
 from app.models.microservice import microservice
-from bottle import Bottle, route, run, request, static_file, template
+#from bottle import Bottle, route, run, request, static_file, template
 import copy
 import cherrypy
 key = ''
@@ -74,4 +74,7 @@ class webserver(object):
     #def runserver(self): 
     #   run(webserver.sluice, host='localhost', port=8080)
 
-
+#cherrypy.config.update({'engine.autoreload.on': False})
+#cherrypy.server.unsubscribe()
+#cherrypy.engine.start()
+#wsgiapp = cherrypy.tree.mount(webserver())
