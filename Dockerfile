@@ -17,4 +17,5 @@
 #ENV MESSAGE "hello from Docker"
 
 FROM python:3-onbuild
-CMD [ "python", "./runserver.py" ]
+#CMD [ "python", "./runserver.py" ]
+CMD [ "python", "./run-auth-server.py" ]
