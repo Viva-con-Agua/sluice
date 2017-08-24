@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+keys/sluicekey.pem
+keys/sluicekey.pub
+sluice.sqlite3
+
 # C extensions
 *.so
 
