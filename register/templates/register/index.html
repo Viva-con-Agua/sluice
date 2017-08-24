@@ -1,0 +1,17 @@
+<html>
+		<head>
+			<title>Register Microservice</title>
+		</head>
+		<body>
+			<div class="page-header">
+				<a href="{% url 'add_microservice' %}" class="top-menu"></a>
+			</div>
+			 <div class="content container">
+            <div class="row">
+                <div class="col-md-8">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+</html>
