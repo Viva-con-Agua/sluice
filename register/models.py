@@ -2,6 +2,18 @@ from django.db import models
 from django.utils import timezone
 # Create your models here.
 
+'''
+    Microservice Model
+
+    Parameters
+    ----------
+    name : string
+    url : string
+    publicKey : string
+    created_date : time
+    modifyed_date : time
+'''
+
 class Microservice(models.Model):
     #owner = models.ForeignKey('auth.User')
     name = models.CharField(max_length=200, primary_key=True)

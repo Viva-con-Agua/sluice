@@ -6,14 +6,26 @@ from jwt.contrib.algorithms.pycrypto import RSAAlgorithm
 #jwt.register_algorithm('RS256', RSAAlgorithm(RSAAlgorithm.SHA256))
 
 class request_handler(object):
-    KEY = pem.parse_file('../keys/sluicekey.pem')
-    print(str(KEY[0]))
-    def get_payload(name):
+    #KEY = pem.parse_file('../keys/sluicekey.pem')
+
+    def get_token(name):
         payload = requests.get('http://localhost:8000/api/payload/' + name)
-        payload_json = json.dumps(payload.text)
+        KEY = pem.parse_file('../keys/sluicekey.pem')
+        print(payload.status_code)
+        payload_json = json.loads(payload.text)
         print(payload.text)
-        token = jwt.encode({'hallo': 'hallo'}, str(request_handler.KEY[0]), algorithm='RS512')
+        token = jwt.encode(payload_json, str(KEY[0]), algorithm='RS512')
         return token
 
+    def get_publicKey(name):
+        payload = requests.get('http://localhost:8000/api/payload/' + name)
+        if payload.status_code != '200':
+            return None
+        else:
+            payload_json = json.loads(payload.text)
+            publicKey = payload_json['publicKey']
+            print(publicKey)
+            return publicKey
 
-print(request_handler.get_payload('blub'))
+#print(request_handler.get_token('blub'))
+#print(request_handler.get_publicKey('blb'))

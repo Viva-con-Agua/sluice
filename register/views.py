@@ -7,17 +7,29 @@ from rest_framework.parsers import JSONParser
 from django.utils import timezone 
  
 
-from .forms import MicroserviceForm
+from .forms import Microservice_Submit_Form
 
 from .models import Microservice
 # Create your views here.
 
+
+'''
+    views index
+'''
 def index(request):
     return render(request, 'register/index.html', {})
 
+'''
+    views micro_add
+
+    use add_microservice.html 
+    use Microservice_Submit_Form
+
+    adds a Microservice over Formular
+'''
 def add_microservice(request):
     if request.method == 'POST':
-        form = MicroserviceForm(request.POST)
+        form = Microservice_Submit_Form(request.POST)
         if form.is_valid():
             micro = form.save(commit=False)
            # micro.name = request.name
@@ -28,9 +40,12 @@ def add_microservice(request):
             micro.save()
             return redirect('add_microservice')
     else:    
-        form = MicroserviceForm()
+        form = Microservice_Submit_Form()
     return render(request, 'register/add_microservice.html', {'form': form})
 
+'''
+    list all Microservices
+'''
 def list_microservice(request):
     microservices = Microservice.objects
     return render(request, 'register/list_microservice.html', {'microservices': microservices})

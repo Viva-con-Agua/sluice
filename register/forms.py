@@ -2,7 +2,15 @@ from django import forms
 
 from .models import Microservice
 
-class MicroserviceForm(forms.ModelForm):
+'''
+    form for Submit Microservice
+    Parameters
+    ----------
+    name , url, publicKey
+    ----------
+'''
+
+class Microservice_Submit_Form(forms.ModelForm):
 
     class Meta:
         model = Microservice
