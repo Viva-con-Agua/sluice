@@ -4,6 +4,7 @@ import threading
 import paramiko
 import socket
 import traceback
+import gssapi
 from request_handler import request_handler
 host_key = paramiko.RSAKey(filename='../keys/sluice_rsa')
 #print(host_key)
@@ -15,20 +16,59 @@ class ssh_server(paramiko.ServerInterface):
 
     def check_auth_publickey(self, username, key):
         publicKey = request_handler.get_publicKey(username)
+        print(publicKey)
         if (key == publicKey):
             return paramiko.AUTH_SUCCESSFUL
-        return paramiko.OPEN_FAILED_ADMINISTRATIVERY_PROHIBITED
-    
-    def check_channel_env_request(self, channel, name, value):
-        if name == 'INVALID_ENV':
-            return False
+        return paramiko.AUTH_SUCCESSFUL
+    def check_auth_gssapi_with_mic(self, username,
+                                   gss_authenticated=paramiko.AUTH_FAILED,
+                                   cc_file=None):
+        """
+        .. note::
+            We are just checking in `AuthHandler` that the given user is a
+            valid krb5 principal! We don't check if the krb5 principal is
+            allowed to log in on the server, because there is no way to do that
+            in python. So if you develop your own SSH server with paramiko for
+            a certain platform like Linux, you should call ``krb5_kuserok()`` in
+            your local kerberos library to make sure that the krb5_principal
+            has an account on the server and is allowed to log in as a user.
+        .. seealso::
+            `krb5_kuserok() man page
+            <http://www.unix.com/man-page/all/3/krb5_kuserok/>`_
+        """
+        if gss_authenticated == paramiko.AUTH_SUCCESSFUL:
+            return paramiko.AUTH_SUCCESSFUL
+        return paramiko.AUTH_FAILED
 
-        if not hasattr(channel, 'env'):
-            setattr(channel, 'env', {})
+    def check_auth_gssapi_keyex(self, username,
+                                gss_authenticated=paramiko.AUTH_FAILED,
+                                cc_file=None):
+        if gss_authenticated == paramiko.AUTH_SUCCESSFUL:
+            return paramiko.AUTH_SUCCESSFUL
+        return paramiko.AUTH_FAILED 
 
-        channel.env[name] = value
+
+    def enable_auth_gssapi(self):
         return True
-    
+
+
+    def check_channel_env_request(self, channel, name, value):
+        #if name == 'INVALID_ENV':
+        #    return False
+        if name != 'DROPS':
+            return False
+        else:
+            response = request_handler.handle_ssh_request(value)
+            chan.send(response)
+            return True
+        
+        #if not hasattr(channel, 'env'):
+        #    setattr(channel, 'env', {})
+
+        #channel.env[name] = value
+        #return True
+#UseGSSAPI = True 
+DoGSSAPIKeyExchange = True    
 # now connect
 try:
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -59,7 +99,7 @@ try:
         print('Failed to load moduli')
         raise
     t.add_server_key(host_key)
-    server = Server()
+    server = ssh_server()
     try:
         t.start_server(server=server)
     except paramiko.SSHException:

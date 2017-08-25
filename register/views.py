@@ -10,6 +10,8 @@ from django.utils import timezone
 from .forms import Microservice_Submit_Form
 
 from .models import Microservice
+
+from sshpubkeys import SSHKey
 # Create your views here.
 
 
@@ -35,6 +37,7 @@ def add_microservice(request):
            # micro.name = request.name
            # micro.url = request.url
            # micro.publicKey = request.publicKey
+            
             micro.created_date = timezone.now()
             micro.modifyed_date = micro.created_date
             micro.save()

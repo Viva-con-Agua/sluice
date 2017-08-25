@@ -27,5 +27,8 @@ class request_handler(object):
             print(publicKey)
             return publicKey
 
+    def handle_ssh_request(request):
+        return requests(request)
+
 #print(request_handler.get_token('blub'))
 #print(request_handler.get_publicKey('blb'))
