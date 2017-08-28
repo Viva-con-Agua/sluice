@@ -1,17 +1,26 @@
-from django.contrib.auth.models import User
-from rest_framework.authentication import BaseAuthentication
-from rest_framework import exceptions
+from social_core.backends.oauth import BaseOAuth2
 
-class oauth2_authorization_code(BaseAuthentication):
-    def authenticate(self, request):
-        username = request.GET.get("username")
+class Pool2OAuth2(BaseOAuth2):
+    """Pool2 OAuth authentication backend"""
+    name = 'drops'
+    AUTHORIZATION_URL = 'sluice_auth'
+    ACCESS_TOKEN_URL = 'sluice_token'
+    SCOPE_SEPARATOR = ','
+    EXTRA_DATA = [
+        ('id', 'id'),
+        ('expires', 'expires')
+    ]
 
-        if not username: # no username passed in request headers
-            return None # authentication did not succeed
+    def get_user_details(self, response):
+        """Return user details from GitHub account"""
+        return {'username': response.get('login'),
+                'email': response.get('email') or '',
+                'first_name': response.get('name')}
 
-        try:
-            user = User.objects.get(username=username) # get the user
-        except User.DoesNotExist:
-            raise exceptions.AuthenticationFailed('No such user') # raise exception if user does not exist
+    def user_data(self, access_token, *args, **kwargs):
+        """Loads user data from service"""
+        url = 'https://api.github.com/user?' + urlencode({
+            'access_token': access_token
+        })
+        return self.get_json(url)
 
-        return (user, None) # authentication successful
