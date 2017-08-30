@@ -5,12 +5,11 @@ import threading
 import paramiko
 import socket
 import traceback
-import gssapi
 from request_handler import request_handler
 from paramiko.py3compat import b, u, decodebytes
 
 
-host_key = paramiko.RSAKey(filename='../keys/sluice_rsa')
+host_key = paramiko.RSAKey(filename='keys/sluice_rsa')
 #print(host_key)
 print('Read key: ' + u(hexlify(host_key.get_fingerprint())))
 class ssh_server(paramiko.ServerInterface):
