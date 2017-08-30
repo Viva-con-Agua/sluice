@@ -50,7 +50,7 @@ def add_microservice(request):
     list all Microservices
 '''
 def list_microservice(request):
-    microservices = Microservice.objects
+    microservices = Microservice.objects.all()   #filter(modifyed_date__lte=timezone.now()).order_by('modifyed_date')
     return render(request, 'register/list_microservice.html', {'microservices': microservices})
 
     

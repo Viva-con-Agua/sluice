@@ -33,16 +33,26 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+   
+    'django.contrib.auth',
+    'django.contrib.sites',
+    'oauth.apps.OauthConfig',   
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+#    'allauth.socialaccount.providers.facebook',
     'rest_framework',
     'restApi.apps.RestapiConfig',
     'register.apps.RegisterConfig',
     'django.contrib.admin',
-    'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+#    'sluice.provider.DropsOAuth2Provider',
 ]
+SITE_ID = 1
+#ACCOUNT_ADAPTER = 'sluice.users.adapter.DropsAccountAdapter'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -72,6 +82,13 @@ TEMPLATES = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 WSGI_APPLICATION = 'sluice.wsgi.application'
 
 
