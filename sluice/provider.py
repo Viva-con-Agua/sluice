@@ -11,7 +11,7 @@ class DropsOAuth2Account(ProviderAccount):
         return self.account.extra_data.get('avatar')
 
     def to_str(self):
-        dflt = super(TUitAccount, self).to_str()
+        dflt = super(OAuth2Account, self).to_str()
         return self.account.extra_data.get('username', dflt)
 
 class DropsOAuth2Provider(OAuth2Provider):
