@@ -15,7 +15,7 @@ class SluiceUserCreationForm(forms.ModelForm):
 
     class Meta:
         model = SluiceUser
-        fields = ('email',)
+        fields = ('pool_id',)
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -43,7 +43,7 @@ class SluiceUserChangeForm(forms.ModelForm):
 
     class Meta:
         model = SluiceUser
-        fields = ('email', 'password', 'is_active' )
+        fields = ('pool_id', 'password', 'is_active' )
 
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.
@@ -60,21 +60,21 @@ class UserAdmin(BaseUserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('email',)
+    list_display = ('pool_id',)
     list_filter = ('is_admin',)
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
+            (None, {'fields': ('pool_id', 'password')}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2')}
+            'fields': ('pool_id', 'password1', 'password2')}
         ),
     )
-    search_fields = ('email',)
-    ordering = ('email',)
+    search_fields = ('pool_id',)
+    ordering = ('pool_id',)
     filter_horizontal = ()
 
 # Now register the new UserAdmin...

@@ -9,15 +9,15 @@ from django.utils import timezone
 
 class SluiceUserManager(BaseUserManager):
 
-    def _create_user(self, email, is_staff, is_superuser, **extra_fields):
+    def _create_user(self, pool_id, is_staff, is_superuser, **extra_fields):
         """
         Creates and saves a User with the given email and password.
         """
         now = timezone.now()
-        if not email:
-            raise ValueError('The given email must be set')
-        email = self.normalize_email(email)
-        user = self.model(email=email,
+        if not pool_id:
+            raise ValueError('NO USER_ID')
+        #drops_id = self.normalize_email(email)
+        user = self.model(pool_id= pool_id,
                           is_staff=is_staff, is_active=True,
                           last_login=now,
                           date_joined=now, **extra_fields)
@@ -25,19 +25,19 @@ class SluiceUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_user(self, email, **extra_fields):
-        return self._create_user(email, False, False,
+    def create_user(self, pool_id, **extra_fields):
+        return self._create_user(pool_id, False, False,
                                  **extra_fields)
 
-    def create_superuser(self, email, password, **extra_fields):
-        return self._create_user(email, password, True, True,
+    def create_superuser(self, pool_id, password, **extra_fields):
+        return self._create_user(pool_id, password, True, True,
                                  **extra_fields)
 
 
 
 
 class SluiceUser(AbstractBaseUser):
-    email = models.EmailField(_('email address'), max_length=254, unique=True, primary_key=True)
+    pool_id = models.CharField(_('pool_id'), max_length=254, unique=True, primary_key=True, default='huhu')
    #first_name = models.CharField(_('first name'), max_length=30, blank=True)
    #last_name = models.CharField(_('last name'), max_length=30, blank=True)
 
@@ -52,7 +52,7 @@ class SluiceUser(AbstractBaseUser):
 
     objects = SluiceUserManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'pool_id'
     REQUIRED_FIELDS = []
 
     class Meta:
@@ -73,11 +73,11 @@ class SluiceUser(AbstractBaseUser):
         "Returns the short name for the user."
         return self.first_name
 
-    def email_user(self, subject, message, from_email=None):
-        """
-        Sends an email to this User.
-        """
-        send_mail(subject, message, from_email, [self.email])
+#    def email_user(self, subject, message, from_email=None):
+#        """
+#        Sends an email to this User.
+#        """
+#        send_mail(subject, message, from_email, [self.email])
 
 
 #class SluiceProfile(models.Model):

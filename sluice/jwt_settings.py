@@ -1,21 +1,30 @@
 '''
     load PrivateKey from File
 '''
-with open("keys/sluice_rsa", "rb") as key_file:
-    temp_private_key = serialization.load_pem_private_key(
-        key_file.read(),
-        password=None,
-        backend=default_backend()
+try:
+    with open("keys/sluice_rsa", "rb") as key_file:
+        temp_private_key = serialization.load_pem_private_key(
+            key_file.read(),
+            password=None,
+            backend=default_backend()
+            )
+    private_key = temp_private_key.private_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PrivateFormat.PKCS8,
+        encryption_algorithm=serialization.NoEncryption()
     )
+except OSError as error:
+    print(error)
+    private_key = None
+
+try:
+    public_key = pem.parse_file('keys/sluice_rsa_pub.pem ')
+except OSError as error:
+    public_key = None
 '''
     convert private_key to the correct PEM-Format
 
 '''
-private_key = temp_private_key.private_bytes(
-    encoding=serialization.Encoding.PEM,
-    format=serialization.PrivateFormat.PKCS8,
-    encryption_algorithm=serialization.NoEncryption()
-)
 
 
 JWT_AUTH = {
@@ -35,7 +44,7 @@ JWT_AUTH = {
     'rest_framework_jwt.utils.jwt_response_payload_handler',
     # Private Public Keys
     'JWT_PRIVATE_KEY': private_key,
-    'JWT_PUBLIC_KEY': pem.parse_file('keys/sluice_rsa_pub.pem'),
+    'JWT_PUBLIC_KEY': public_key,
     
     'JWT_GET_USER_SECRET_KEY': None,
     # RSA with SHA512 

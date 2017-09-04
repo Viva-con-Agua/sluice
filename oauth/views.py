@@ -1,5 +1,6 @@
 import requests
 import json
+from django.db import OperationalError
 from django.shortcuts import render, redirect
 from oauth.models import SluiceUser
 from django.conf import settings
@@ -33,16 +34,18 @@ def oauth2_get_token(request, code):
     
     if profile.status_code == 200 :
         drops_user = json.loads(profile.text)
-        drops_profile = drops_user['profiles'][0]
+        print(drops_user)
+        pool_id = drops_user['id']
         try:
-            print(drops_profile['email'])
-            user = SluiceUser.objects.get(pk=drops_profile['email'])
+            user = SluiceUser.objects.get(pk=pool_id)
         except SluiceUser.DoesNotExist:
-            user = SluiceUser.objects.create_user(drops_profile['email'])
+            user = SluiceUser.objects.create_user(pool_id)
             print('\n New')
+        except OperationalError as error:
+            user = SluiceUser.objects.create_user(pool_id)
         user.is_active = True
         user.save()
-        request.session['email'] = user.email
+        request.session['pool_id'] = user.pool_id
         
     
     return redirect('http://localhost:8000/register/')
