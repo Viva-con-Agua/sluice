@@ -41,9 +41,8 @@ def oauth2_get_token(request, code):
         except SluiceUser.DoesNotExist:
             user = SluiceUser.objects.create_user(pool_id)
             print('\n New')
-        except OperationalError as error:
-            user = SluiceUser.objects.create_user(pool_id)
         user.is_active = True
+        user.token = token
         user.save()
         request.session['pool_id'] = user.pool_id
         

@@ -6,10 +6,52 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 #class SluiceUsers(AbstractUser):
 #    REQUIRED_FIELDS = ["email"]
+import json
+from django.core.serializers.json import DjangoJSONEncoder
+
+
+class JSONField(models.TextField):
+    """
+    JSONField is a generic textfield that neatly serializes/unserializes
+    JSON objects seamlessly.
+    Django snippet #1478
+
+    example:
+        class Page(models.Model):
+            data = JSONField(blank=True, null=True)
+
+
+        page = Page.objects.get(pk=5)
+        page.data = {'title': 'test', 'type': 3}
+        page.save()
+    """
+
+    def to_python(self, value):
+        if value == "":
+            return None
+
+        try:
+            if isinstance(value, str):
+                return json.loads(value)
+        except ValueError:
+            pass
+        return value
+
+    def from_db_value(self, value, *args):
+        return self.to_python(value)
+
+    def get_db_prep_save(self, value, *args, **kwargs):
+        if value == "":
+            return None
+        if isinstance(value, dict):
+            value = json.dumps(value, cls=DjangoJSONEncoder)
+        return value
+
+
 
 class SluiceUserManager(BaseUserManager):
 
-    def _create_user(self, pool_id, is_staff, is_superuser, **extra_fields):
+    def _create_user(self, pool_id, token, is_staff, is_superuser, **extra_fields):
         """
         Creates and saves a User with the given email and password.
         """
@@ -17,7 +59,7 @@ class SluiceUserManager(BaseUserManager):
         if not pool_id:
             raise ValueError('NO USER_ID')
         #drops_id = self.normalize_email(email)
-        user = self.model(pool_id= pool_id,
+        user = self.model(pool_id= pool_id, token='',
                           is_staff=is_staff, is_active=True,
                           last_login=now,
                           date_joined=now, **extra_fields)
@@ -26,7 +68,7 @@ class SluiceUserManager(BaseUserManager):
         return user
 
     def create_user(self, pool_id, **extra_fields):
-        return self._create_user(pool_id, False, False,
+        return self._create_user(pool_id, '', False, False,
                                  **extra_fields)
 
     def create_superuser(self, pool_id, password, **extra_fields):
@@ -40,7 +82,7 @@ class SluiceUser(AbstractBaseUser):
     pool_id = models.CharField(_('pool_id'), max_length=254, unique=True, primary_key=True, default='huhu')
    #first_name = models.CharField(_('first name'), max_length=30, blank=True)
    #last_name = models.CharField(_('last name'), max_length=30, blank=True)
-
+    token = JSONField(max_length=254, null=True)
     is_staff = models.BooleanField(_('staff status'), default=False,
         help_text=_('Designates whether the user can log into this admin '
                     'site.'))
