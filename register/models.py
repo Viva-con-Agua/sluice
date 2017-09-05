@@ -8,6 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 #import pem
 #import sshpubkeys
 from Crypto.PublicKey import RSA
+from oauth.models import SluiceUser
 
 # Create your models here.
 
@@ -33,7 +34,7 @@ def validate_ssh_key(value):
         raise ValidationError(_('Invalid Key Typ'))
 
 class Microservice(models.Model):
-    #owner = models.ForeignKey('auth.User')
+    owner = models.ForeignKey('oauth.SluiceUser')
     name = models.CharField(max_length=200, primary_key=True)
     url = models.CharField(max_length=200)
     publicKey = models.TextField(validators=[validate_ssh_key])
