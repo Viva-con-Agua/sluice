@@ -19,6 +19,6 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^oauth/', include('oauth.urls')),
     url(r'^api/', include('restApi.urls')),
-    url(r'^register/', include('register.urls')),   
+    url(r'^microservice/', include('register.urls')),   
     url(r'^admin/', admin.site.urls),
 ]
