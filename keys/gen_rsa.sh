@@ -1,4 +1,4 @@
 #!/bin/bash
 
-openssl genrsa -out sluicekey.pem 4096
-openssl rsa -in sluicekey.pem -pubout > sluicekey.pub
+openssl genrsa -out $1.pem 4096
+openssl rsa -in $1.pem -pubout > $1.pub

@@ -4,8 +4,11 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
-from sshpubkeys import SSHKey
-import sshpubkeys
+#from sshpubkeys import SSHKey
+#import pem
+#import sshpubkeys
+from Crypto.PublicKey import RSA
+
 # Create your models here.
 
 '''
@@ -21,9 +24,9 @@ import sshpubkeys
 '''
 
 def validate_ssh_key(value):
-    validate = SSHKey(value)
+    #validate = SSHKey(value)
     try:
-        validate.parse()
+        publicKeyObject = RSA.importKey(value)
     #except SSHKey.InvalidKeyError as err:
     #    raise ValidationError(_('Invalid Key: ' + err))
     except Exception as err:
