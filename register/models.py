@@ -9,7 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 #import sshpubkeys
 from Crypto.PublicKey import RSA
 from oauth.models import SluiceUser
-
+from sshpubkeys import SSHKey
 # Create your models here.
 
 '''
@@ -25,9 +25,10 @@ from oauth.models import SluiceUser
 '''
 
 def validate_ssh_key(value):
-    #validate = SSHKey(value)
+    validate = SSHKey(value)
     try:
-        publicKeyObject = RSA.importKey(value)
+        #publicKeyObject = RSA.importKey(value)
+        validate.parse()
     #except SSHKey.InvalidKeyError as err:
     #    raise ValidationError(_('Invalid Key: ' + err))
     except Exception as err:

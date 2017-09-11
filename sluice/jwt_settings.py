@@ -2,7 +2,7 @@
     load PrivateKey from File
 '''
 try:
-    with open("keys/sluice_rsa", "rb") as key_file:
+    with open("keys/sluice_key.pem", "rb") as key_file:
         temp_private_key = serialization.load_pem_private_key(
             key_file.read(),
             password=None,

@@ -7,9 +7,10 @@ import socket
 import traceback
 from request_handler import request_handler
 from paramiko.py3compat import b, u, decodebytes
+import base64
+from sshpubkeys import SSHKey
 
-
-host_key = paramiko.RSAKey.from_private_key_file('keys/sluice_key.pem')
+host_key = paramiko.RSAKey.from_private_key_file('keys/sluice_key')
 #print(host_key)
 print('Read key: ' + u(hexlify(host_key.get_fingerprint())))
 class ssh_server(paramiko.ServerInterface):
@@ -24,29 +25,33 @@ class ssh_server(paramiko.ServerInterface):
 
     def check_auth_publickey(self, username, key):
         print('Auth attempt with key: ' + u(hexlify(key.get_fingerprint())))
-        if username == 'test':
+        try:
+            KEY = paramiko.pkey.PKey.get_base64(key)
+            
             publicKey = request_handler.get_publicKey(username)
-            print(publicKey)
-            if (key == publicKey):
+            pub = publicKey.split(' ')
+            print(pub)
+            print(KEY)
+            if (KEY == pub[1]):
                 return paramiko.AUTH_SUCCESSFUL
-        return paramiko.OPEN_FAILED_ADMINISTRATIVERY_PROHIBITED
+        except Exception as e:
+            print(e)
+            return paramiko.AUTH_FAILED
 
     def check_channel_env_request(self, channel, name, value):
-        #if name == 'INVALID_ENV':
-        #    return False
         if name != 'DROPS':
             return False
         else:
             response = request_handler.handle_ssh_request(value)
             chan.send(response)
             return True
-        
-        #if not hasattr(channel, 'env'):
-        #    setattr(channel, 'env', {})
 
-        #channel.env[name] = value
-        #return True
-#UseGSSAPI = True 
+    def enable_auth_gssapi(self):
+        return True
+ 
+    def get_allowed_auths(self, username):
+        return 'publickey'
+
 DoGSSAPIKeyExchange = True    
 # now connect
 try:

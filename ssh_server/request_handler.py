@@ -19,8 +19,8 @@ class request_handler(object):
 
     def get_publicKey(name):
         payload = requests.get('http://localhost:8000/api/payload/' + name)
-        if payload.status_code != '200':
-            return None
+        if payload.status_code != 200:
+            return payload.status_code
         else:
             payload_json = json.loads(payload.text)
             publicKey = payload_json['publicKey']
