@@ -36,7 +36,7 @@ SECRET_KEY = 'zj!n3hffmz257fit1_*3p_x9xlv8ozma0l)g2%17yrf5n5v=y5'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["0.0.0.0", "localhost", "172.17.0.1"]
 
 
 # Application definition
@@ -69,7 +69,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+CACHES = {
+   'default': {
+      'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+      'LOCATION': 'views_cache',
+   }
+}
 ROOT_URLCONF = 'sluice.urls'
 
 TEMPLATES = [

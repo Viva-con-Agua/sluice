@@ -1,0 +1,25 @@
+{
+	"metaData": {
+		"microServiceName": "test",
+		"template": "navigation_top",
+		"searchEngineKeywords": ["test"],
+		"language": ["test"],
+		"organization": "test"
+	},
+	"templateData": {
+		"title": "Sign in",
+		"header": "test",
+		"body": "test"
+	},
+	"navigationData": {
+		"navigation_Name": "TEST",
+		"navigation_Entrys": [
+			{ "entry_Lable": "AddMicro",
+				"entry_URL": "http://localhost:8000/microservice/register"
+			},
+			{ "entry_Lable": "ListMicro",
+				"entry_URL": "http://localhost:8000/microservice/list_micro"
+			}
+		]
+	}
+}

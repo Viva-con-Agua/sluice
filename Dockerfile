@@ -36,6 +36,6 @@ ADD . /sluice/
 
 EXPOSE 8000
 
-CMD ["/bin/sh", "-c", "tmux new -AdDEP /venv/bin/python manage.py runserver 0.0.0.0:8000 && tmux new -AdDEP /venv/bin/python ssh_server/ssh-server.py"]
+CMD ["/bin/sh", "-c", "tmux new -AdDEP /venv/bin/python manage.py runserver 0.0.0.0:8000 && tmux new /venv/bin/python runserver.py"]
 #CMD ["/bin/sh", "-c", "tmux new -AdDEP /venv/bin/python ssh_server/ssh-server.py"]
 
