@@ -33,4 +33,4 @@ rsa==3.4.2
 six==1.10.0
 sshpubkeys==2.2.0
 sshtunnel==0.1.2
-urllib3==1.22
+urllib3==1.26.5
